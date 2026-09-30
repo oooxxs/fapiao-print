@@ -162,7 +162,9 @@ jobs:
           name: ${{ github.ref_name }}
           body_path: release_body.txt
           draft: false
-          prerelease: false
+          # 带「-」的 tag（如 v2.6.11-beta.1）发布为预发布：GitHub 的 /releases/latest
+          # 不含预发布，因此不会被应用内更新检查推送给所有用户（供指定用户试用验证）
+          prerelease: ${{ contains(github.ref_name, '-') }}
           files: dist/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
